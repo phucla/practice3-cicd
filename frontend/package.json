@@ -17,6 +17,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@types/babel__traverse": "^7.18.3",
     "@types/classnames": "2.2.9",
     "@types/enzyme": "^3.10.2",
     "@types/enzyme-adapter-react-16": "^1.0.5",
@@ -44,8 +45,12 @@
     "html-loader": "^1.0.0-alpha.0",
     "html-webpack-plugin": "^4.0.0-beta.4",
     "identity-obj-proxy": "^3.0.0",
+    "jest": "^24.9.0",
+    "loader-utils": "^3.2.1",
     "mini-css-extract-plugin": "^0.7.0",
-    "postcss": "^7.0.17",
+    "node-pre-gyp": "^0.17.0",
+    "npm-force-resolutions": "0.0.10",
+    "postcss": "^7.0.39",
     "postcss-browser-reporter": "^0.6.0",
     "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",
@@ -57,15 +62,15 @@
     "react-test-renderer": "^16.8.6",
     "redux-devtools-extension": "^2.13.8",
     "style-loader": "^0.23.1",
-    "ts-jest": "^24.0.2",
+    "ts-jest": "^24.3.0",
     "ts-loader": "^6.0.4",
     "tslint": "^5.18.0",
-    "typescript": "^3.5.3",
+    "typescript": "^5.0.3",
     "url-loader": "^2.0.1",
     "webpack": "^4.35.3",
     "webpack-cleanup-plugin": "^0.5.1",
-    "webpack-cli": "^3.3.5",
-    "webpack-dev-server": "^3.7.2"
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.3"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.19",
@@ -82,8 +87,8 @@
     "connected-react-router": "^4.5.0",
     "dotenv": "^8.0.0",
     "dotenv-webpack": "^1.7.0",
-    "jest": "^24.8.0",
-    "moment": "^2.24.0",
+    "minimist": "^1.2.8",
+    "moment": "^2.29.4",
     "oauth-sign": "^0.9.0",
     "raf": "^3.4.1",
     "react": "^16.8.6",
@@ -119,6 +124,9 @@
       "!<rootDir>/app/components/(Error|Callback)/*",
       "!<rootDir>/app/services/(httpService).ts"
     ],
+    "resolutions": {
+      "minimist": "^1.2.8"
+    },
     "moduleFileExtensions": [
       "ts",
       "tsx",
