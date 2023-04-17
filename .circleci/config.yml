@@ -188,7 +188,7 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints:
-            - "c7:56:23:b1:06:b1:45:a0:37:84:68:6b:a5:63:50:b2:11:e6:e1:79"
+            - "cd:4a:52:1f:f0:5d:d9:83:ae:cc:82:5b:52:e8:ac:d3"
       - restore_cache:
           key: inventory-{{ .Revision  }}
       - run:
