@@ -172,10 +172,10 @@ jobs:
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text >> .circleci/ansible/inventory.txt
       - run: cat .circleci/ansible/inventory.txt
-      # - save_cache:
-      #     paths:
-      #       - .circleci/ansible/inventory.txt
-      #     key: inventory-{{ .Revision  }}
+      - save_cache:
+          paths:
+            - .circleci/ansible/inventory.txt
+          key: inventory-{{ .Revision  }}
       # - persist_to_workspace:
       #     root: ~/
       #     paths:
@@ -189,8 +189,8 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "cd:4a:52:1f:f0:5d:d9:83:ae:cc:82:5b:52:e8:ac:d3"
-      # - restore_cache:
-      #     key: inventory-{{ .Revision  }}
+      - restore_cache:
+          key: inventory-{{ .Revision  }}
       - run:
           name: Install Ansible
           command: |
