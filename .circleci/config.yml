@@ -188,6 +188,10 @@ jobs:
       - restore_cache:
           key: inventory-{{ .Revision  }}
       - run:
+          name: Install gcc
+          command: |
+            apt-get install gcc
+      - run:
           name: Install Ansible
           command: |
             pip install --user ansible
