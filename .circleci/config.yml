@@ -176,10 +176,6 @@ jobs:
           paths:
             - .circleci/ansible/inventory.txt
           key: inventory-{{ .Revision  }}
-      # - persist_to_workspace:
-      #     root: ~/
-      #     paths:
-      #       - project/.circleci/ansible/inventory.txt
 
   configure-infrastructure:
     docker:
@@ -210,9 +206,6 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - restore_cache:
-          key: inventory-{{ .Revision  }}
-      - run: cat .circleci/ansible/inventory.txt
       - run:
           name: Run migrations
           command: |
@@ -345,10 +338,10 @@ workflows:
       #     filters:
       #       branches:
       #         only: [master]
-      # - configure-infrastructure:
-      #     requires: [deploy-infrastructure]
+      - configure-infrastructure
+          # requires: [deploy-infrastructure]
       - run-migrations
-        # requires: [configure-infrastructure]
+          requires: [configure-infrastructure]
       # - deploy-frontend:
       #     requires: [run-migrations]
       # - deploy-backend:
