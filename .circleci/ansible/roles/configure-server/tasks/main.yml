@@ -1,4 +1,20 @@
 ---
+- name: Install the gpg key
+  apt_key:
+    url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
+    state: present
+
+- name: Install the nodejs
+  apt_repository:
+    repo: "deb https://deb.nodesource.com/node_{{ NODEJS_VERSION }} bionic main"
+    state: present
+    update_cache: yes
+
+- name: Remove nodesource
+  file:
+    path: /etc/apt/sources.list.d/deb_nodesource_com_node_13_x.list
+    state: absent
+
 - name: "update apt packages."
   become: yes
   apt:
@@ -16,7 +32,7 @@
   become: yes
   apt:
     name: ["nodejs", "npm"]
-    state: latest
+    state: present
     update_cache: yes
 - name: Install pm2
   become: yes
