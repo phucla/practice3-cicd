@@ -354,12 +354,11 @@ workflows:
       #     filters:
       #       branches:
       #         only: [master]
-     
       - configure-infrastructure
-          # requires: [deploy-infrastructure]
+        # requires: [deploy-infrastructure]
       - configure_node_exporter:
-          requires: [deploy-infrastructure]
-      - run-migrations
+          requires: [configure-infrastructure]
+      - run-migrations:
           requires: [configure-infrastructure]
       # - deploy-frontend:
       #     requires: [run-migrations]
