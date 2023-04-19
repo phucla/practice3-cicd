@@ -191,6 +191,10 @@ jobs:
           command: |
             apk add --update ansible
       - run:
+          name: update paramiko
+          command: |
+            pip3 -U paramiko
+      - run:
           name: Configure server
           command: |
             ansible-playbook .circleci/ansible/configure-server.yml -i .circleci/ansible/inventory.txt
