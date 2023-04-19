@@ -1,8 +1,8 @@
 ---
-- name: Install the gpg key
-  apt_key:
-    url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
-    state: present
+# - name: Install the gpg key
+#   apt_key:
+#     url: "https://deb.nodesource.com/gpgkey/nodesource.gpg.key"
+#     state: present
 
 - name: Install the nodejs
   apt_repository:
