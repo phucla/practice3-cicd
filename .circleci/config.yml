@@ -193,7 +193,7 @@ jobs:
       - run:
           name: update paramiko
           command: |
-            pip3 -U paramiko
+            apk add python3-paramiko
       - run:
           name: Configure server
           command: |
