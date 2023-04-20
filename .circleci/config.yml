@@ -179,7 +179,7 @@ jobs:
 
   configure-infrastructure:
     docker:
-      - image: cimg/base:stable
+      - image: cimg/python:3.11.3-node
     steps:
       - checkout
       - add_ssh_keys:
@@ -189,7 +189,7 @@ jobs:
       - run:
           name: Install Ansible
           command: |
-            pip install --user ansible
+            apk add --update ansible
       # - run:
       #     name: update paramiko
       #     command: |
@@ -205,7 +205,7 @@ jobs:
 
   configure_node_exporter:
     docker:
-      - image: cimg/base:stable
+      - image: cimg/python:3.11.3-node
     steps:
       - checkout
       - add_ssh_keys:
