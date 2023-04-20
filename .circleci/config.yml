@@ -179,7 +179,7 @@ jobs:
 
   configure-infrastructure:
     docker:
-      - image: circleci/python@2.1.1
+      - image: cimg/base:stable
     steps:
       - checkout
       - add_ssh_keys:
@@ -205,7 +205,7 @@ jobs:
 
   configure_node_exporter:
     docker:
-      - image: circleci/python@2.1.1
+      - image: cimg/base:stable
     steps:
       - checkout
       - add_ssh_keys:
