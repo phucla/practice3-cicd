@@ -197,10 +197,6 @@ jobs:
       - restore_cache:
           key: inventory-{{ .Revision  }}
       - install_ansible
-      # - run:
-      #     name: update paramiko
-      #     command: |
-      #       apk add python3-paramiko
       - run:
           name: Configure server
           command: |
@@ -220,9 +216,7 @@ jobs:
             - "cd:4a:52:1f:f0:5d:d9:83:ae:cc:82:5b:52:e8:ac:d3"
       - restore_cache:
           key: inventory-{{ .Revision  }}
-      - run:
-          name: Install Ansible
-          command: apk add --update ansible
+      - install_ansible
       - run:
           name: install exporter
           command: ansible-playbook .circleci/ansible/install-node-exporter.yml -i .circleci/ansible/inventory.txt
