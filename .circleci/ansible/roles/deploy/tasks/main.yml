@@ -1,0 +1,16 @@
+---
+- name: Creates folder
+  file:
+    path: /home/ubuntu/project
+    state: directory
+- name: Unarchive artifact
+  unarchive:
+    src: ../artifact/artifact.tar.gz
+    dest: /home/ubuntu/project
+- name: Copy env file
+  shell: cp /tmp/.env /home/ubuntu/project
+- name: Start app
+  shell: |
+    cd project
+    pm2 stop default
+    pm2 start npm -- start
