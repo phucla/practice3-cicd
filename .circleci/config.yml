@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   aws: circleci/aws-cli@3.1.5
+  python: circleci/python@2.1.1
 
 commands:
   destroy-stack:
@@ -168,7 +169,8 @@ jobs:
           key: scan-backend
 
   deploy-infrastructure:
-    executor: aws/default
+    docker:
+      - image: amazon/aws-cli
     working_directory: ~/project
     steps:
       - checkout
@@ -208,10 +210,10 @@ jobs:
           paths:
             - .circleci/ansible/inventory.txt
           key: inventory-{{ .Revision  }}
-      # - persist_to_workspace:
-      #     root: ~/
-      #     paths:
-      #       - project/.circleci/ansible/inventory.txt
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/.circleci/ansible/inventory.txt
   configure-infrastructure:
     docker:
       - image: cimg/base:stable
