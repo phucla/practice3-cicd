@@ -343,21 +343,21 @@ jobs:
       - destroy-stack:
           stack_name: udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
 
-  cloudfront-update:
-    docker:
-      - image: amazon/aws-cli
-    steps:
-      -checkout
-      - setup_aws
-      - run:
-          name: Update cloudfront distribution
-          command: |
-            aws cloudformation deploy \
-              --template-file .circleci/files/cloudfront.yml \
-              --stack-name InitialStack \
-              --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
-              --tags project=udapeople
-      # Here's where you will add some code to rollback on failure
+  # cloudfront-update:
+  #   docker:
+  #     - image: amazon/aws-cli
+  #   steps:
+  #     - checkout
+  #     - setup_aws
+  #     - run:
+  #         name: Update cloudfront distribution
+  #         command: |
+  #           aws cloudformation deploy \
+  #             --template-file .circleci/files/cloudfront.yml \
+  #             --stack-name InitialStack \
+  #             --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
+  #             --tags project=udapeople
+  # Here's where you will add some code to rollback on failure
 
 # cleanup:
 #   docker:
