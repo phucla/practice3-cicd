@@ -3,6 +3,11 @@ orbs:
   aws: circleci/aws-cli@3.1.5
   python: circleci/python@2.1.1
 
+executors:
+  node:
+    docker:
+      - image: cimg/node:13.8.0
+
 commands:
   destroy-stack:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
@@ -169,8 +174,9 @@ jobs:
           key: scan-backend
 
   deploy-infrastructure:
-    docker:
-      - image: amazon/aws-cli
+    # docker:
+    #   - image: amazon/aws-cli
+    executor: aws/default
     working_directory: ~/project
     steps:
       - checkout
@@ -210,11 +216,12 @@ jobs:
           paths:
             - .circleci/ansible/inventory.txt
           key: inventory-{{ .Revision  }}
-      # - persist_to_workspace:
-      #     root: ~/
-      #     paths:
-      #       - project/.circleci/ansible/inventory.txt
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/.circleci/ansible/inventory.txt
   configure-infrastructure:
+    working_directory: ~/project
     docker:
       - image: cimg/base:stable
     steps:
