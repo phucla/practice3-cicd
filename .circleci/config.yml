@@ -333,7 +333,7 @@ jobs:
             echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
       - run:
           name: Backend smoke test.
-          command: command: chmod +x .circleci/scripts/smokeTest-BE.sh && .circleci/scripts/smokeTest-BE.sh
+          command: chmod +x .circleci/scripts/smokeTest-BE.sh && .circleci/scripts/smokeTest-BE.sh
       - run:
           name: Frontend smoke test
           command: chmod +x .circleci/scripts/smokeTest-FE.sh && .circleci/scripts/smokeTest-FE.sh $CIRCLE_WORKFLOW_ID
