@@ -206,7 +206,10 @@ jobs:
           paths:
             - .circleci/ansible/inventory.txt
           key: inventory-{{ .Revision  }}
-
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/.circleci/ansible/inventory.txt
   configure-infrastructure:
     docker:
       - image: cimg/base:stable
