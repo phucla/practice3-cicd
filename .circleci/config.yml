@@ -39,6 +39,14 @@ commands:
             aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
             aws configure set region $AWS_DEFAULT_REGION
 
+  setup_aws:
+    description: setup aws
+    steps:
+      - aws/setup:
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          aws-region: AWS_DEFAULT_REGION
+
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
     parameters:
@@ -49,15 +57,9 @@ commands:
       - run:
           name: Revert migrations
           command: |
-            # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            SUCCESS = 1
-            if(( $SUCCESS==1 ));
-            then
-              cd ~/project/backend
-              npm install
-              npm run migrations:revert
-              exit 1
-            fi
+            cd ~/project/backend
+            npm install
+            npm run migrations:revert
           when: on_fail
 
 jobs:
@@ -331,14 +333,7 @@ jobs:
             echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
       - run:
           name: Backend smoke test.
-          command: |
-            echo "${API_URL}"
-            if curl --connect-timeout 10 "${API_URL}/api/status" | grep "ok"
-            then
-              exit 0
-            else
-              exit 1
-            fi
+          command: command: chmod +x .circleci/scripts/smokeTest-BE.sh && .circleci/scripts/smokeTest-BE.sh
       - run:
           name: Frontend smoke test
           command: chmod +x .circleci/scripts/smokeTest-FE.sh && .circleci/scripts/smokeTest-FE.sh $CIRCLE_WORKFLOW_ID
@@ -348,20 +343,21 @@ jobs:
       - destroy-stack:
           stack_name: udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
 
-#   cloudfront-update:
-#     docker:
-#       # Docker image here that supports AWS CLI
-#     steps:
-#       # Checkout code from git
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # your code here
-#       - run:
-#           name: Update cloudfront distribution
-#           command: |
-#             # your code here
-#       # Here's where you will add some code to rollback on failure
+  cloudfront-update:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      -checkout
+      - setup_aws
+      - run:
+          name: Update cloudfront distribution
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/cloudfront.yml \
+              --stack-name InitialStack \
+              --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
+              --tags project=udapeople
+      # Here's where you will add some code to rollback on failure
 
 # cleanup:
 #   docker:
