@@ -229,8 +229,8 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints: ["cd:4a:52:1f:f0:5d:d9:83:ae:cc:82:5b:52:e8:ac:d3"]
-      - restore_cache:
-          key: inventory-{{ .Revision  }}
+      - attach_workspace:
+          at: ~/
       - install_ansible
       - run:
           name: Configure server
@@ -250,8 +250,8 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "cd:4a:52:1f:f0:5d:d9:83:ae:cc:82:5b:52:e8:ac:d3"
-      - restore_cache:
-          key: inventory-{{ .Revision  }}
+      - attach_workspace:
+          at: ~/
       - install_ansible
       - run:
           name: install exporter
@@ -289,10 +289,11 @@ jobs:
     steps:
       - checkout
       - install_dependencies
+      - attach_workspace:
+          at: ~/
       - restore_cache:
           name: restore cache
           keys:
-            - inventory-{{ .Revision  }}
             - frontend-build
       - run:
           name: Get backend url
@@ -319,9 +320,10 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints: ["cd:4a:52:1f:f0:5d:d9:83:ae:cc:82:5b:52:e8:ac:d3"]
+      - attach_workspace:
+          at: ~/
       - restore_cache:
           keys:
-            - inventory-{{ .Revision  }}
             - backend-build
       - install_ansible
       - run:
@@ -339,9 +341,10 @@ jobs:
     steps:
       - checkout
       - install_dependencies
+      - attach_workspace:
+          at: ~/
       - restore_cache:
           keys:
-            - inventory-{{ .Revision  }}
             - frontend-build
             - backend-build
       - run:
@@ -400,35 +403,34 @@ jobs:
 workflows:
   default:
     jobs:
-      # - build-frontend
-      # - build-backend
-      # - test-frontend:
-      #     requires: [build-frontend]
-      # - test-backend:
-      #     requires: [build-backend]
-      # - scan-backend:
-      #     requires: [build-backend]
-      # - scan-frontend:
-      #     requires: [build-frontend]
-      # - deploy-infrastructure:
-      #     requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-      #     filters:
-      #       branches:
-      #         only: [master]
-      # - configure-infrastructure:
-      #     requires: [deploy-infrastructure]
-      # - configure_node_exporter:
-      #     requires: [configure-infrastructure]
-      # - run-migrations:
-      #     requires: [configure-infrastructure]
-      # - deploy-frontend:
-      #     requires: [run-migrations]
-      # - deploy-backend:
-      #     requires: [run-migrations]
-      # - smoke-test:
-      #     requires: [deploy-backend, deploy-frontend]
+      - build-frontend
+      - build-backend
+      - test-frontend:
+          requires: [build-frontend]
+      - test-backend:
+          requires: [build-backend]
+      - scan-backend:
+          requires: [build-backend]
+      - scan-frontend:
+          requires: [build-frontend]
+      - deploy-infrastructure:
+          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          filters:
+            branches:
+              only: [master]
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
+      - configure_node_exporter:
+          requires: [configure-infrastructure]
+      - run-migrations:
+          requires: [configure-infrastructure]
+      - deploy-frontend:
+          requires: [run-migrations]
+      - deploy-backend:
+          requires: [run-migrations]
+      - smoke-test:
+          requires: [deploy-backend, deploy-frontend]
       # - cloudfront-update:
       #     requires: [smoke-test]
       # - cleanup:
       #     requires: [cloudfront-update]
-      - deploy-infrastructure
