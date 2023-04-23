@@ -1,5 +1,5 @@
 
-echo "NODE_ENV=produ" > /tmp/.env
+echo "NODE_ENV=production" > /tmp/.env
 echo "VERSION=1" >> /tmp/.env
 echo "TYPEORM_CONNECTION=${TYPEORM_CONNECTION}"  >> /tmp/.env
 echo "TYPEORM_MIGRATIONS_DIR=${TYPEORM_MIGRATIONS_DIR}" >> /tmp/.env
