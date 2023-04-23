@@ -321,9 +321,15 @@ jobs:
           fingerprints: ["cd:4a:52:1f:f0:5d:d9:83:ae:cc:82:5b:52:e8:ac:d3"]
       - attach_workspace:
           at: ~/
-      - restore_cache:
-          keys:
-            - backend-build
+      # - restore_cache:
+      #     keys:
+      #       - backend-build
+      - run:
+          name: Back-end build
+          command: |
+            cd backend
+            npm install
+            npm run build
       - install_ansible
       - run:
           name: Deploy backend
@@ -336,7 +342,7 @@ jobs:
   smoke-test:
     working_directory: ~/project
     docker:
-      - image: cimg/node:13.8.0
+      - image: cimg/node:13.13.0
     steps:
       - checkout
       - install_dependencies
