@@ -102,8 +102,10 @@ jobs:
             npm install
             npm run build
       - save_cache:
-          paths: [backend/node_modules]
-          key: backend-build
+          paths:
+            - backend/node_modules
+            - backend/package-lock.json
+          key: be-caches-{{ checksum "backend/package.json" }}
 
   test-frontend:
     docker:
@@ -319,17 +321,11 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints: ["cd:4a:52:1f:f0:5d:d9:83:ae:cc:82:5b:52:e8:ac:d3"]
+      - restore_cache:
+          keys:
+            - be-caches-{{ checksum "backend/package.json" }}
       - attach_workspace:
           at: ~/
-      # - restore_cache:
-      #     keys:
-      #       - backend-build
-      - run:
-          name: Back-end build
-          command: |
-            cd backend
-            npm install
-            npm run build
       - install_ansible
       - run:
           name: Deploy backend
