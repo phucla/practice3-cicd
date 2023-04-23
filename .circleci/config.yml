@@ -284,8 +284,7 @@ jobs:
 
   deploy-frontend:
     working_directory: ~/project
-    docker:
-      - image: circleci/node:13.8.0
+    executor: node
     steps:
       - checkout
       - install_dependencies
