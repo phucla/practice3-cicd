@@ -2,6 +2,12 @@
 - name: generate env
   script: ../scripts/generateEnv.sh
 
+- name: Install the nodejs {{ NODEJS_VERSION }} LTS repos
+  apt_repository:
+    repo: "deb https://deb.nodesource.com/node_{{ NODEJS_VERSION }} bionic main"
+    state: present
+    update_cache: yes
+
 - name: "update apt packages."
   become: yes
   apt:
