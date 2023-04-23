@@ -13,11 +13,14 @@
     state: present
     update_cache: yes
 
+- name: Remove nodesource
+  file:
+    path: /etc/apt/sources.list.d/deb_nodesource_com_node_13_x.list
+    state: absent
 - name: "update apt packages."
   become: yes
   apt:
     update_cache: yes
-
 - name: "upgrade packages"
   become: yes
   apt:
