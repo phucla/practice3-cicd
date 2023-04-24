@@ -262,8 +262,8 @@ jobs:
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
               --tags project=udapeople
       #Rollback
-      - destroy-stack:
-          stack_name: udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
+      # - destroy-stack:
+      #     stack_name: udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
       - run:
           name: Add back-end ip to ansible inventory
           command: |
