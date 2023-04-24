@@ -164,7 +164,6 @@ jobs:
             - backend/node_modules
             - backend/package-lock.json
           key: be-build--{{ .Revision  }}
-      - slack_notification
 
   test-frontend:
     docker:
@@ -419,11 +418,11 @@ jobs:
       - run:
           name: Frontend smoke test
           command: chmod +x .circleci/scripts/smokeTest-FE.sh && .circleci/scripts/smokeTest-FE.sh $CIRCLE_WORKFLOW_ID
-      - revert-migrations
-      - destroy-stack:
-          stack_name: udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
-      - destroy-stack:
-          stack_name: udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
+      # - revert-migrations
+      # - destroy-stack:
+      #     stack_name: udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
+      # - destroy-stack:
+      #     stack_name: udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
 
   cloudfront-update:
     working_directory: ~/project
@@ -439,7 +438,6 @@ jobs:
               --stack-name InitialStack \
               --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
               --tags project=udapeople
-      - slack_notification
 
   cleanup:
     working_directory: ~/project
@@ -455,7 +453,8 @@ jobs:
 workflows:
   default:
     jobs:
-      - build-frontend
+      - build-frontend:
+          context: develop
       - build-backend
       - test-frontend:
           requires: [build-frontend]
