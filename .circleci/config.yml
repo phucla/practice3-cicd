@@ -359,10 +359,10 @@ jobs:
           name: Frontend smoke test
           command: chmod +x .circleci/scripts/smokeTest-FE.sh && .circleci/scripts/smokeTest-FE.sh $CIRCLE_WORKFLOW_ID
       - revert-migrations
-      # - destroy-stack:
-      #     stack_name: udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
-      # - destroy-stack:
-      #     stack_name: udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
+      - destroy-stack:
+          stack_name: udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
+      - destroy-stack:
+          stack_name: udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
 
   cloudfront-update:
     working_directory: ~/project
@@ -378,26 +378,17 @@ jobs:
               --stack-name InitialStack \
               --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
               --tags project=udapeople
-  # Here's where you will add some code to rollback on failure
 
-# cleanup:
-#   docker:
-#     # Docker image here
-#   steps:
-#     # Checkout code from git
-#     - run:
-#         name: Get old stack workflow id
-#         command: |
-#           # your code here
-#           export OldWorkflowID="the id here"
-#           export STACKS=[] #put the list of stacks here
-#     - run:
-#         name: Remove old stacks and files
-#         command: |
-#           if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
-#           then
-#             # your code here
-#           fi
+  cleanup:
+    working_directory: ~/project
+    executor: aws/default
+    steps:
+      - checkout
+      - setup_aws
+      - run:
+          name: Remove old stacks and files
+          command: |
+            chmod +x .circleci/scripts/cleanupOldStack.sh && .circleci/scripts/cleanupOldStack.sh
 
 workflows:
   default:
@@ -414,22 +405,38 @@ workflows:
           requires: [build-frontend]
       - deploy-infrastructure:
           requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-          filters:
+          filters: &filters-master
             branches:
               only: [master]
       - configure-infrastructure:
+          filters:
+            <<: *filters-master
           requires: [deploy-infrastructure]
       - configure_node_exporter:
+          filters:
+            <<: *filters-master
           requires: [configure-infrastructure]
       - run-migrations:
+          filters:
+            <<: *filters-master
           requires: [configure-infrastructure]
       - deploy-frontend:
+          filters:
+            <<: *filters-master
           requires: [run-migrations]
       - deploy-backend:
+          filters:
+            <<: *filters-master
           requires: [run-migrations]
       - smoke-test:
+          filters:
+            <<: *filters-master
           requires: [deploy-backend, deploy-frontend]
-      # - cloudfront-update:
-      #     requires: [smoke-test]
-      # - cleanup:
-      #     requires: [cloudfront-update]
+      - cloudfront-update:
+          filters:
+            <<: *filters-master
+          requires: [smoke-test]
+      - cleanup:
+          filters:
+            <<: *filters-master
+          requires: [cloudfront-update]
