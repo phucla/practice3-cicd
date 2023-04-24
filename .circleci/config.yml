@@ -2,6 +2,7 @@ version: 2.1
 orbs:
   aws: circleci/aws-cli@3.1.5
   python: circleci/python@2.1.1
+  slack: circleci/slack@4.12.1
 
 executors:
   node:
@@ -9,6 +10,64 @@ executors:
       - image: cimg/node:13.8.0
 
 commands:
+  slack_notification:
+    description: "Slack notification"
+    steps:
+      - slack/notify:
+          custom: |
+            {
+              "attachments": [
+                {
+                  "color": "#d50054",
+                  "blocks": [
+                    {
+                      "type": "header",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "Your build is FAILED",
+                        "emoji": true
+                      }
+                    },
+                    {
+                      "type": "section",
+                      "text": {
+                        "type": "mrkdwn",
+                        "text": "Build *${CIRCLE_BUILD_NUM}* is failed. Job is ${CIRCLE_JOB} as here: ${CIRCLE_BUILD_URL}"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          event: fail
+
+      - slack/notify:
+          event: pass
+          custom: |
+            {
+              "attachments": [
+                {
+                  "color": "#00d581",
+                  "blocks": [
+                    {
+                      "type": "header",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "Your build is PASSED",
+                        "emoji": true
+                      }
+                    },
+                    {
+                      "type": "section",
+                      "text": {
+                        "type": "mrkdwn",
+                        "text": "Build *${CIRCLE_BUILD_NUM}* is PASSED as here: ${CIRCLE_BUILD_URL}"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
   destroy-stack:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
     parameters:
@@ -87,6 +146,7 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
+      - slack_notification
 
   build-backend:
     docker:
@@ -104,6 +164,7 @@ jobs:
             - backend/node_modules
             - backend/package-lock.json
           key: be-build--{{ .Revision  }}
+      - slack_notification
 
   test-frontend:
     docker:
@@ -378,6 +439,7 @@ jobs:
               --stack-name InitialStack \
               --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
               --tags project=udapeople
+      - slack_notification
 
   cleanup:
     working_directory: ~/project
