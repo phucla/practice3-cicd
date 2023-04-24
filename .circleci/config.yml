@@ -146,7 +146,6 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
-      - slack_notification
 
   build-backend:
     docker:
@@ -164,7 +163,6 @@ jobs:
             - backend/node_modules
             - backend/package-lock.json
           key: be-build--{{ .Revision  }}
-      - slack_notification
 
   test-frontend:
     docker:
@@ -439,7 +437,6 @@ jobs:
               --stack-name InitialStack \
               --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
               --tags project=udapeople
-      - slack_notification
 
   cleanup:
     working_directory: ~/project
