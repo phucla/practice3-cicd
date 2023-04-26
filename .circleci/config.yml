@@ -132,7 +132,7 @@ commands:
 jobs:
   build-frontend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/node:13.13.0
     steps:
       - checkout
       - restore_cache:
@@ -149,7 +149,7 @@ jobs:
 
   build-backend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/node:13.13.0
     steps:
       - checkout
       - run:
@@ -166,7 +166,7 @@ jobs:
 
   test-frontend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/node:13.13.0
     steps:
       - checkout
       - restore_cache:
@@ -183,7 +183,7 @@ jobs:
 
   test-backend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/node:13.13.0
     steps:
       - checkout
       - restore_cache:
@@ -200,7 +200,7 @@ jobs:
 
   scan-frontend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/node:13.13.0
     steps:
       - checkout
       - restore_cache:
@@ -217,7 +217,7 @@ jobs:
 
   scan-backend:
     docker:
-      - image: circleci/node:13.8.0
+      - image: cimg/node:13.13.0
     steps:
       - checkout
       - restore_cache:
@@ -262,8 +262,8 @@ jobs:
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
               --tags project=udapeople
       #Rollback
-      # - destroy-stack:
-      #     stack_name: udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
+      - destroy-stack:
+          stack_name: udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
       - run:
           name: Add back-end ip to ansible inventory
           command: |
