@@ -434,13 +434,13 @@ jobs:
       - run:
           name: Frontend smoke test
           command: chmod +x .circleci/scripts/smokeTest-FE.sh && .circleci/scripts/smokeTest-FE.sh $CIRCLE_WORKFLOW_ID
-      - revert-migrations
       - destroy-stack:
           stack_name: udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
       - delete_s3:
           id: ${CIRCLE_WORKFLOW_ID:0:7}
       - destroy-stack:
           stack_name: udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
+      - revert-migrations
 
   cloudfront-update:
     working_directory: ~/project
