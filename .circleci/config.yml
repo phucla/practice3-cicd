@@ -278,9 +278,9 @@ jobs:
       - run:
           name: Add back-end ip to ansible inventory
           command: |
-            chmod +x .circleci/bash/getEc2Ip.sh
+            chmod +x .circleci/scripts/getEc2Ip.sh
             echo [web] > .circleci/ansible/inventory.txt
-            .circleci/bash/getEc2Ip.sh "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" >> .circleci/ansible/inventory.txt
+            .circleci/scripts/getEc2Ip.sh "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" >> .circleci/ansible/inventory.txt
       - run: cat .circleci/ansible/inventory.txt
       - save_cache:
           paths:
