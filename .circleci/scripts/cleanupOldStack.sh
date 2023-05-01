@@ -1,7 +1,5 @@
 # Fetch the Old workflow ID
-export OldWorkflowID=$(aws cloudformation \
-          list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
-          --no-paginate --output text)
+export OldWorkflowID=$(tail -n 1 .circleci/ansible/oldIp.txt)
 echo OldWorkflowID: "${OldWorkflowID}"
 echo CIRCLE_WORKFLOW_ID "${CIRCLE_WORKFLOW_ID:0:7}"
 
