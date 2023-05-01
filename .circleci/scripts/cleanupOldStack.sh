@@ -4,10 +4,6 @@ export OldWorkflowID=$(aws cloudformation \
           --no-paginate --output text)
 echo OldWorkflowID: "${OldWorkflowID}"
 echo CIRCLE_WORKFLOW_ID "${CIRCLE_WORKFLOW_ID:0:7}"
-# Fetch the stack names          
-export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
-          --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
-echo Stack names: "${STACKS[@]}"      
 
 if [[ "${CIRCLE_WORKFLOW_ID:0:7}" != "${OldWorkflowID}" ]]
 then
