@@ -298,7 +298,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ["cd:4a:52:1f:f0:5d:d9:83:ae:cc:82:5b:52:e8:ac:d3"]
+          fingerprints: ["63:10:f6:34:52:f6:3d:64:52:54:9a:d9:ec:32:45:28"]
       - attach_workspace:
           at: ~/
       - install_ansible
@@ -321,7 +321,7 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints:
-            - "cd:4a:52:1f:f0:5d:d9:83:ae:cc:82:5b:52:e8:ac:d3"
+            - "63:10:f6:34:52:f6:3d:64:52:54:9a:d9:ec:32:45:28"
       - attach_workspace:
           at: ~/
       - install_ansible
@@ -392,7 +392,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ["cd:4a:52:1f:f0:5d:d9:83:ae:cc:82:5b:52:e8:ac:d3"]
+          fingerprints: ["63:10:f6:34:52:f6:3d:64:52:54:9a:d9:ec:32:45:28"]
       - restore_cache:
           keys:
             - be-build--{{ .Revision  }}
