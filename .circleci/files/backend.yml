@@ -34,3 +34,10 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub backend-${ID}
+
+Outputs:
+  EC2Instance:
+    Description: Instance Id
+    Value: !Ref EC2Instance
+    Export:
+      Name: !Sub EC2InstanceId-${ID}
