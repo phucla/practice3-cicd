@@ -5,7 +5,7 @@ BACKEND_IP=$(tail -n 1 .circleci/ansible/inventory.txt)
   echo "${API_URL}"
   if curl --connect-timeout 10 "${API_URL}/api/status" | grep "ok"
   then
-  	exit 0
+  	exit 1
   else
   	exit 1
   fi
